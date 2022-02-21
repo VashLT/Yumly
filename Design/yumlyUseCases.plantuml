@@ -4,11 +4,14 @@
 
     skinparam Style strictuml 
     skinparam SequenceMessageAlignment center
+    
+    skinparam monochrome reverse
+    skinparam roundcorner 20
 
     ' Definitions
         ' Actors
         package Staff {
-            Actor :Moderator: 
+            Actor :Moderator:                                                                                
             Actor :Chef:
         }
 
