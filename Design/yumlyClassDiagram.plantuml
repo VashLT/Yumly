@@ -1,0 +1,37 @@
+@startuml yumlyClassDiagram
+
+title Yumly: Class Diagram
+
+class Platillo {
+    + id: UUID
+    + name: str
+    + description: str
+    + author: Union[User, None]
+    + ingredients: list[tuple[Ingredient, float, str]]
+    + recipeSteps: list[str]
+    + specificUtensils: list[Utensils]
+    + preparationTime: float
+    + votes: int
+    + timesAdded: int
+    + categories: list[str]
+    + isPublished: bool
+    + isCreated: bool
+    ---
+    
+}
+
+class User {
+    +username: str
+    +email: str
+}
+
+class Ingredient {
+
+}
+
+class Utensil {
+
+}
+
+
+@enduml
