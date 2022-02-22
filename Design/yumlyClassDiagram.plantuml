@@ -1,0 +1,101 @@
+@startuml yumlyClassDiagram
+
+title \n Yumly: Class Diagram \n
+
+left to right direction
+skinparam monochrome reverse
+skinparam roundcorner 20
+
+class Menu {
+    + id: int
+    + name: str
+    + votes: int
+    + description: str
+    + creation_date: Date
+    + dish_list: Set[Dish]
+    + author: Union[None, User]
+    + categories: list[MenuCategory]
+}
+
+class Dish {
+    + id: int
+    + name: str
+    + description: str
+    + original_author: Union[User, None]
+    + author: Union[User, None]
+    + ingredients: list[tuple[Ingredient, float]]
+    + recipe_steps: list[str]
+    + utensils: list[Utensils]
+    + preparation_time: float
+    + votes: int
+    + times_added: int
+    + is_published: bool
+    + is_created: bool
+    + categories: list[DishCategory]
+}
+
+class User {
+    + id: int
+    + username: str
+    + email: str
+    + password_hash: str
+    + join_date: Date
+    + last_active: Date
+}
+
+class Ingredient {
+    + id: int
+    + name: str
+    + nutritional_value: NutritionalValue
+    + category: Category
+}
+
+class NutritionalValue {
+    + fats: float
+    + protein: float
+    + carbs: float
+}
+
+class Filter {
+    +id: int
+    +name: str
+    +icon: str
+}
+
+class DishCategory {
+
+}
+
+class IngredientCategory {
+
+}
+
+class Utensil {
+
+}
+
+class MenuCategory {
+
+}
+
+
+' Relationships
+
+MenuCategory -- Menu
+Utensil -- Dish
+DishCategory -- Dish
+
+Menu -- User
+Menu -- Dish
+Dish -Right- User
+
+IngredientCategory -- Ingredient
+Dish -Left- Ingredient
+Ingredient -Right- NutritionalValue
+
+Filter <|-- IngredientCategory
+Filter <|-- DishCategory
+Filter <|-- MenuCategory
+Filter <|-- Utensil
+
+@enduml

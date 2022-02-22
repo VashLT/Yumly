@@ -1,0 +1,49 @@
+@startuml yumlyUseCases
+
+    title Yumly: Use Case Diagram
+
+    skinparam Style strictuml 
+    skinparam SequenceMessageAlignment center
+    
+    skinparam monochrome reverse
+    skinparam roundcorner 20
+
+    ' Definitions
+        ' Actors
+        package Staff {
+            Actor :Moderator:                                                                                
+            Actor :Chef:
+        }
+
+        package Users {
+            Actor :User: as U
+            Actor :User Chef: as UC
+        }
+
+        ' Use Cases
+        rectangle MainUserOperation {
+            usecase (Generate Menu) as (GenMen)
+            usecase (Manually Select Recipe) as (SelRec)
+            usecase (Randomly Select Recipe) as (RndRec)
+            usecase (Configure Menu) as (ConMen)
+        }
+
+        ' Relationships
+            ' Users
+            U <|-right- UC
+            note left of UC
+                ¿Necesitamos hacer una 
+                distinción entre User y
+                User Chef o sólo lo tratamos
+                como una única entidad?
+            end note
+
+            ' Use cases
+            GenMen .down.> SelRec
+            GenMen .down.> RndRec
+            GenMen <.down. ConMen
+
+            ' Users to use cases
+            U -up-> GenMen
+            U --> ConMen
+@enduml
