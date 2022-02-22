@@ -1,0 +1,49 @@
+@startuml yumlyBasicOperationFlowchart
+
+    title \n Yumly: Basic Operation \n
+
+    skinparam Style strictuml 
+    skinparam SequenceMessageAlignment center
+    
+    skinparam monochrome true
+    skinparam roundcorner 20
+
+    start 
+        if (Is user logged in?) then (Yes)
+            
+        else (No)
+            :User logs in;
+        endif
+
+        if (What will the user do?) then (Select a premade\nMenu)
+            :Several menus will be presented;
+
+            if (User selects a menu from\nthe displayed options) then (Yes)
+            else (No) 
+                :User will use filters in order to\nfind a desirable menu for them;
+            endif
+                :User selects a menu;
+        else (Generate custom \nMenu)
+            :User selects the amount of\ndishes they wish to select;
+
+            repeat
+                :Several dishes will be presented;
+
+                if (User selects a menu from\nthe displayed options) then (Yes)
+                else (No) 
+                    :User will use filters in order to\nfind a desirable dish for them;
+                endif
+
+                :User adds a dish to menu;
+
+            repeat while (Has the user selected all the dishes?)
+        endif
+
+        :User generates the shopping list\nwith all the ingredients required;
+
+
+        :User rates the menu;
+    stop
+
+
+@enduml

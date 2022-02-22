@@ -3,7 +3,7 @@
 title \n Yumly: Class Diagram \n
 
 left to right direction
-skinparam monochrome reverse
+skinparam monochrome true
 skinparam roundcorner 20
 
 class Menu {
