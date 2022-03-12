@@ -3,10 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
-
-
-class User(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+from django.contrib.auth.models import User
 
 
 class Filter(models.Model):
