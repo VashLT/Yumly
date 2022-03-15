@@ -64,7 +64,7 @@ class Dish(models.Model):
     preparation_time = models.IntegerField()
     votes = models.IntegerField()
     times_added = models.IntegerField()
-    is_published = models.BooleanField
+    is_published = models.BooleanField()
     is_created = models.BooleanField()
     creation_date = models.DateField()
     categories = models.ManyToManyField(DishCategory)

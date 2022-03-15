@@ -45,6 +45,7 @@ class DishSerializer(serializers.ModelSerializer):
             'votes',
             'times_added',
             'is_created',
+            'is_published',
             'creation_date',
             'author_id',
             'original_author_id',
