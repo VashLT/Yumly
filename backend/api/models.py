@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 
 
 class Filter(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256, blank=False, null=False)
     icon = models.CharField(max_length=512)
 
@@ -32,14 +33,14 @@ class Utensil(models.Model):
 
 
 class NutricionalValue(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    id = models.AutoField(primary_key=True)
     fats = models.FloatField()
     protein = models.FloatField()
     carbs = models.FloatField()
 
 
 class Ingredient(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256, blank=False, null=False)
     nutricional_value = models.OneToOneField(
         NutricionalValue,
@@ -49,16 +50,16 @@ class Ingredient(models.Model):
 
 
 class Dish(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    name = models.CharField(max_length=256, blank=False, null=False)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=256, blank=False, null=True)
     description = models.TextField()
     original_author = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=False, related_name='%(class)s_original',
+        User, on_delete=models.CASCADE, null=True, related_name='%(class)s_original',
     )
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_author'
     )
-    recipe_steps = ArrayField(models.TextField(), size=20)
+    recipe_steps = ArrayField(models.TextField(), size=100)
     utensils = models.ManyToManyField(Utensil)
     preparation_time = models.IntegerField()
     votes = models.IntegerField()
@@ -70,7 +71,7 @@ class Dish(models.Model):
 
 
 class Menu(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    id = id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256, blank=False, null=False)
     votes = models.IntegerField()
     description = models.TextField()
