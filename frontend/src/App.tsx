@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react';
+import { AuthProvider, AuthContext } from './components/Contexts/Auth';
+import YumlyThemeProvider from './components/Core/Theme/Theme';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-function App() {
+import Dashboard from './components/Pages/Dashboard';
+import { WrapperProfile as Profile } from './components/Pages/Profile';
+import Login from './components/Pages/Login';
+import NotFound from './components/Pages/NotFound';
+import LandingPage from './components/Pages/LandingPage';
+import Loading from './components/Pages/Loading';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <YumlyThemeProvider>
+        <AppRouter />
+      </YumlyThemeProvider>
+    </AuthProvider>
   );
+}
+
+const AppRouter: React.FC = () => {
+  const { isAuth, auth, isLoading } = useContext(AuthContext);
+  console.log("AppRouter", { isAuth, auth })
+  if (isLoading) {
+    return <Loading />
+  }
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={( isAuth ? <Dashboard /> : <LandingPage />)}/>
+        <Route path='/login' element={(isAuth ? <Navigate replace to="/"/> : <Login />)}/>
+        {/* <Route exact path='/test' component={Test} /> */}
+        <Route
+          path='/:username'
+          element={<Profile />}
+        />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
+  )
 }
 
 export default App;
