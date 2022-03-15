@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
+
+from rest_framework.exceptions import NotFound
+
 from api.serializers import DishSerializer, UserSerializer, GroupSerializer
 
 from api.models import Dish
@@ -26,3 +29,6 @@ class DishViewSet(viewsets.ModelViewSet):
     queryset = Dish.objects.all()
     serializer_class = DishSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+def error404(request, exception):
+    raise NotFound(detail={'custom': 'im custom!'}, code=404)

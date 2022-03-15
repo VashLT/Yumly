@@ -1,4 +1,6 @@
 from django.urls import include, path
+from django.conf.urls import handler404
+
 from rest_framework import routers
 import api.views
 
@@ -13,3 +15,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
 ]
+
+handler404 = api.views.error404
