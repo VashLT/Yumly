@@ -26,7 +26,7 @@ class NutricionalValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NutricionalValue
         fields = "__all__"
-
+    
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +37,18 @@ class IngredientSerializer(serializers.ModelSerializer):
 class DishSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Dish
-        fields = "__all__"
+        fields = [
+            'name',
+            'description',
+            'recipe_steps',
+            'preparation_time',
+            'votes',
+            'times_added',
+            'is_created',
+            'creation_date',
+            'author_id',
+            'original_author_id',
+        ]
 
 
 class MenuSerializer(serializers.ModelSerializer):

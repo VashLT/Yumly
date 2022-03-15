@@ -5,10 +5,11 @@ import api.views
 router = routers.DefaultRouter()
 router.register(r"users", api.views.UserViewSet)
 router.register(r"groups", api.views.GroupViewSet)
+router.register(r"dish", api.views.DishViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", include(router.urls)),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/", include("rest_framework.urls", namespace="rest_framework")),
 ]
