@@ -37,22 +37,15 @@ class IngredientSerializer(serializers.ModelSerializer):
 class DishSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Dish
-        fields = [
-            'name',
-            'description',
-            'recipe_steps',
-            'preparation_time',
-            'votes',
-            'times_added',
-            'is_created',
-            'is_published',
-            'creation_date',
-            'author_id',
-            'original_author_id',
-        ]
+        fields = '__all__'
 
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Menu
         fields = "__all__"
+
+class DishCategorySerializer(serializers.MultipleChoiceField):
+    class Mete:
+        model = models.DishCategory
+        fields = '__all__'
