@@ -29,8 +29,9 @@ const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={( isAuth ? <Dashboard /> : <LandingPage />)}/>
-        <Route path='/login' element={(isAuth ? <Navigate replace to="/"/> : <Login />)}/>
+        <Route path='/' element={(isAuth ? <Navigate replace to="/dashboard"/> : <LandingPage />)}/>
+        <Route path='/login' element={(isAuth ? <Navigate replace to="/dashboard"/> : <Login />)}/>
+        <Route path='/dashboard/*' element={( isAuth ? <Dashboard /> : <LandingPage />)}/>
         {/* <Route exact path='/test' component={Test} /> */}
         <Route
           path='/:username'

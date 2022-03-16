@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { mockAuth } from "../../utils/mock";
 // import { AvatarGenerator } from "random-avatar-generator";
-import { avatarGen } from "../../utils/constants";
+import { API_URL, avatarGen } from "../../utils/constants";
 import {Iauth, IresAuth} from "./interfaces";
 import axios from 'axios';
+import { cookieStorage } from "../../utils/storage";
 
 export const AuthContext = React.createContext({
     auth: {} as Iauth,
@@ -18,7 +19,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const getAuth = useCallback(async () => {
-        let backendAuth: Iauth = await axios.get('api/user/auth/')
+        let backendAuth: Iauth = await axios.get(`${API_URL}/user/auth/`,
+            { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }}
+        )
             .then(res => {
                 console.log({ res })
                 const data = (res as unknown as IresAuth).data;

@@ -1,12 +1,15 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Grid, Box, Theme } from '@mui/material';
+import { Grid, Box, Theme, Typography, Divider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { cookieStorage } from '../../../utils/storage';
 import { Imenu, IresMenu } from './interfaces';
-import Menu from './Menu';
+import { MenuWrapper as Menu } from './Menu';
 import Skeleton from './Skeleton';
-import { DataObjectSharp } from '@mui/icons-material';
+import { showBackError } from '../Alerts/BackendError';
+import { renderAt } from '../../../utils/components';
+import { mockMenus } from '../../../utils/mock';
+import { API_URL } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -49,96 +52,79 @@ export const Menus: React.FC = () => {
     const [didFetch, setDidFetch] = useState(false);
 
     useEffect(() => {
-        // if (didFetch) return;
-        // fetchMenus(() => setDidFetch(true))
-        fetchData();
+        if (didFetch) return;
+        fetchMenus(() => setDidFetch(true))
     });
 
     return (
-        <Grid container xs={12} component='div' sx={{ mb: '20px' }}>
+        <>
+            <Typography className={classes.title} variant="h1" component="div" gutterBottom>
+                Menús
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
             <Grid
-                id="formulasGrid"
+                id="menus-grid"
+                key="menus-grid"
                 container
                 className={classes.grid}
             >
-                {Array(10).fill(1).map(_ => <Grid className={classes.gridItem} item><Skeleton /></Grid>
+                {Array(10).fill(1).map((_, index) =>
+                    <Grid key={index} className={classes.gridItem} item>
+                        <Skeleton />
+                    </Grid>
                 )}
             </Grid>
-        </Grid>
+        </>
     );
 }
 
 export const fetchMenus = async (callback?: () => void) => {
-    let menus: [] | IresMenu[] = await axios.post("api/menus/search/",
-        { data: "" },
+    let menus: [] | IresMenu[] = await axios.get(`${API_URL}/menus`,
         {
             headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }
         })
         .then(res => {
             console.log({ res });
-            const data = (res as any).data as IresMenu[];
-
-            if (!("menus" in data)) {
-                return []
+            if ("data" in res) {
+                return (res.data as unknown) as IresMenu[];
             }
-            return data;
+            return [];
         })
-    // .catch(err => {
-    //     console.error(err)
-    //     renderAt(
-    //         <BriefNotification
-    //             type="main"
-    //             severity="error"
-    //             text="Internal error"
-    //         />,
-    //         "_overlay"
-    //     )
-    //     return []
-    // }) as IunfmtFormula[] | []
+        .catch(err => {
+            console.log("showBackError", err);
+            showBackError(err);
+            return [];
+        });
 
     console.log({ menus })
 
     // temporary
     if (menus.length === 0) {
-        // menus = mockFormulas;
-        menus = [];
+        menus = mockMenus;
     }
 
-    // insertFormulas(formulas);
+    insertMenus(menus);
 
     if (callback) {
         callback();
     }
 };
 
-export default memo(Menus);
-
-
-let menus = await axios.post("api/menus/search/",
-    { data: "" },
-    {
-        headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }
-    })
-    .then(res => {
-        console.log({ res });
-        const data = (res as any).data as IresMenu[];
-
-        if (!("menus" in data)) {
-            return []
-        }
-        return data;
-    })
-
-export const fetchData = async () => {
-
-    const datos = await axios.get("api/menus/").then((response) => {
-        console.log({ response });
-        if (!response) {
-            return [];
-        }
-        const data = response.data;
-        return data;
-    })
-
-    return datos;
+export const insertMenus = (menus: IresMenu[]) => {
+    console.log("insertMenus", { menus })
+    if (menus.length === 0) return;
+    renderAt(
+        <>
+            {menus.map((menu, index) => {
+                return (
+                    <Grid item justifyContent={'center'}>
+                        <Menu key={"m" + index} menu={menu} />
+                    </Grid>
+                );
+            })}
+        </>,
+        "menus-grid"
+    )
 }
+
+export default memo(Menus);

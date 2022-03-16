@@ -22,13 +22,13 @@ interface Iobject {
     [key: string]: string;
 }
 
-interface Iresponse {
-    data: {
-        [key: string]: string;
-    },
-    status: number;
-    [key: string]: string;
+interface IbackError {
+    message: string;
+    status_code: number;
+    type: "error" | "warning";
 }
+
+type Iresponse<Response> = Response | IbackError;
 
 interface Iuser {
     id: number;

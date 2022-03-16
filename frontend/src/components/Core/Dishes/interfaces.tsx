@@ -21,11 +21,11 @@ export interface IresDish {
     id: number;
     name: string;
     description: string;
-    original_author: IbasicUser | null;
-    author: IbasicUser | null;
+    recipe_steps?: string[];
+    original_author_id: number | null;
+    author_id: number | null;
     ingredients: [Iingredient, number][];
-    recipe_steps: string[];
-    utensils: Icategory[];
+    utensils?: Icategory[];
     preparation_time: number;
     votes: number;
     times_added: number;
@@ -33,3 +33,4 @@ export interface IresDish {
     is_created: boolean;
     categories: Icategory[];
 }
+

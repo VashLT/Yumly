@@ -4,16 +4,27 @@ import { Route, Routes } from 'react-router-dom';
 import Dishes from '../Core/Dishes/Dishes';
 import MenuEdit from '../Core/Menus/MenuEdit';
 import Menus from '../Core/Menus/Menus';
+import { Box } from '@mui/material';
 
 export const Dashboard: React.FC = () => {
     return (
         <Page withNav={true}>
-            <Routes>
-                <Route path="/" element={<Menus />} />
-                <Route path="/dish" element={<Dishes />} />
-                <Route path="/menu/:id" element={<MenuEdit />} />
-            </Routes>
-            </Page>
+            <Box sx={{
+                width: '100vw',
+                padding: '0 50px',
+                flexGrow: 1,
+                m: '0',
+                pt: '40px',
+                overflowX: 'hidden',
+            }}>
+                <Routes>
+                    <Route path="/" element={<Menus />} />
+                    <Route path="/dish" element={<Dishes />} />
+                    <Route path="/menu/:id" element={<MenuEdit />} />
+                </Routes>
+                <div id="_overlay"></div>
+            </Box>
+        </Page>
 );
 }
 
