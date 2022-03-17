@@ -144,7 +144,7 @@ REST_FRAMEWORK = {
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -162,7 +162,9 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
-SOCIAL_AUTH_URL_NAMESPACE = 'oauth'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
-GITHUB_OAUTH_ID = 'ef0c24ed35ce2c76ff09'
-GITHUB_OAUTH_SECRET = '076707dd1fc11570fbe72dd5d4a9e26ac850ba11'
+LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_GITHUB_KEY = 'ef0c24ed35ce2c76ff09'
+SOCIAL_AUTH_GITHUB_SECRET = '076707dd1fc11570fbe72dd5d4a9e26ac850ba11'

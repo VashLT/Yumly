@@ -18,7 +18,9 @@ router.register(r"dishcategory", api.views.DishCategoryViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", include(router.urls)),
-    path("oauth/", oauth.views.exchange_token, name='github'),
+    path("oauth/", oauth.views.exchange_token, name='oauth'),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
     path("dishsearch/", api.views.DishSearchAPIView.as_view(), name="dishsearch"),
+    # path('complete/github/', api.views.check_user),
+    path('', include('social_django.urls', namespace='social'))
 ]

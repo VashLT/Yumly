@@ -4,6 +4,7 @@ from rest_framework import viewsets, generics, filters
 from rest_framework import status
 from rest_framework.response import Response
 
+from django.http import HttpResponse
 
 from api.serializers import (
     DishSerializer,
@@ -42,6 +43,9 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     permission_classes = []
+
+    def delete(self, request):
+        self.destroy(request)
 
 
 class DishViewSet(viewsets.ModelViewSet):
@@ -106,3 +110,11 @@ class DishSearchAPIView(generics.ListAPIView):
 
         queryset = Dish.objects.filter(**filter_keyword_arguments_dict)
         return queryset
+
+def check_user(request):
+
+    if request.user.is_authenticated:
+        return HttpResponse('Yei', status=status.HTTP_200_OK)
+    
+    else:
+        return HttpResponse('nei', status=status.HTTP_404_NOT_FOUND)
