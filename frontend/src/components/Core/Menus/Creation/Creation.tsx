@@ -21,6 +21,10 @@ import { CircularProgress, DialogActions, TextField, Theme } from '@mui/material
 import { LoadingButton } from '@mui/lab';
 import { Add } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import DishChooser from './DishChooser';
+import CategoriesMenu from './CategoriesMenu';
+import { IresMenuCats } from '../../../../hooks/useGetMenuCategories';
+import { COLORS } from '../../../../utils/constants';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -46,16 +50,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export type IdishList = {
+export type IdishChoose = {
     id: number;
-    name: number;
+    name: string;
 }
 
 export const MenuCreation: React.FC = () => {
     const [name, setName] = useState<string | null>(null);
     const [description, setDescription] = useState<string | null>(null);
-    const [dishList, setDishList] = useState<IdishList[]>([]);
-    const [categories, setCategories] = useState<[]>([]);
+    const [dishList, setDishList] = useState<IdishChoose[]>([]);
+    const [categories, setCategories] = useState<IresMenuCats[]>([]);
 
     const [open, setOpen] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -66,21 +70,25 @@ export const MenuCreation: React.FC = () => {
         setIsLoading(true);
         let savedMenu = await createMenu({
             name: name as string,
+            author_id: 1,
             description: description ?? "",
+            creation_date: new Date().toISOString().split('T')[0],
             dish_list: dishList.map((dish) => dish.id) as number[],
-            categories,
+            categories: categories.map((cat) => cat.id) as number[],
             votes: 0,
         })
+        setIsLoading(false);
         if (savedMenu === null) return;
 
         if (savedMenu === false) {
             showNotification("error", "The menu couldn't be created");
         } else {
-            showNotification("error", "The menu has been created successfully");
+            showNotification("success", "The menu has been created successfully");
             redirect("/dashboard/");
         }
-        setIsLoading(false);
-    }, [])
+
+        setOpen(false);
+    }, [categories, description, dishList, name])
 
 
     const handleClose = () => {
@@ -94,7 +102,7 @@ export const MenuCreation: React.FC = () => {
             onClose={handleClose}
             TransitionComponent={Transition}
         >
-            <AppBar sx={{ position: 'relative' }}>
+            <AppBar sx={{ position: 'relative', backgroundColor: COLORS.light_red }}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -113,41 +121,54 @@ export const MenuCreation: React.FC = () => {
                         color="inherit"
                         loadingIndicator={<CircularProgress sx={{ color: "white", fill: "white" }} size={16} />}
                         onClick={saveMenu}
+                        disabled={(name === "" || name === null) || (description === "" || description === null) || dishList.length === 0}
                     >
                         save
                     </LoadingButton>
                 </Toolbar>
             </AppBar>
-            <List>
+            <List sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <ListItem
                     component={Box}
+                    sx={{ width: '50%' }}
                 >
                     <TextField
                         id="descInput"
-                        label="Description"
+                        label="Name"
+                        sx={{ width: '100%' }}
+                        defaultValue=""
+                        onBlur={(e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => setName(e.currentTarget.value)}
+                    />
+                </ListItem>
+                <Divider sx={{ mb: 2 }} />
+                <ListItem
+                    component={Box}
+                    sx={{ width: '50%' }}
+                >
+                    <TextField
+                        id="descInput"
+                        label="Descripción del menú"
+                        sx={{ width: '100%' }}
                         multiline
                         rows={4}
-                        defaultValue="Descripción del menú"
+                        defaultValue=""
                         onBlur={(e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => setDescription(e.currentTarget.value)}
                     />
                 </ListItem>
-                <Divider />
-                <ListItem button>
-                    <ListItemText
-                        primary="Default notification ringtone"
-                        secondary="Tethys"
-                    />
-                </ListItem>
+                <Divider sx={{ mb: 2 }} />
+                <DishChooser dishes={dishList} setDishes={setDishList} />
+                <CategoriesMenu categories={categories} updateCategories={setCategories} />
             </List>
-            <DialogActions>
+            <DialogActions sx={{ width: "50%", alignSelf: "center" }}>
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
                 <LoadingButton
                     loading={isLoading}
-                    onClick={handleClose}
+                    onClick={saveMenu}
                     variant="contained"
                     color="success"
-                    disabled={(name === "" || name === null) && dishList.length === 0}
-                    endIcon={<Add />}
+                    disabled={(name === "" || name === null) || (description === "" || description === null) || dishList.length === 0}
+                    startIcon={<Add />}
+                    loadingPosition="start"
                 >
                     Create
                 </LoadingButton>

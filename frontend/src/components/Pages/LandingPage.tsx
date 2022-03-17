@@ -32,7 +32,7 @@ export const LandingPage: React.FC = () => {
                             width: "90vw"
                         }
                     }}>
-                    All your formulas in one place
+                    All your menus in one place
                 </Typography>
                 <Typography
                     variant="h3"
@@ -48,7 +48,7 @@ export const LandingPage: React.FC = () => {
                         }
                     }}
                 >
-                    Myte is the web app where you can manage your mathematical formulas
+                    Yumly is the web app where you can manage all your food menus!
                 </Typography>
             </Box>
             <div id="_overlay"></div>

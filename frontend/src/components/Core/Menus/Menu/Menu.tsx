@@ -72,7 +72,7 @@ export const createMenu = async (fields: ImenuCreate) => {
 
 export const editMenu = async (fields: ImenuUpdate) => {
     return await axios
-        .put(`${API_URL}/menu/`, fields, getHeaders())
+        .put(`${API_URL}/menu/${fields.id}`, fields, getHeaders())
         .then((res) => res)
         .catch((err) => {
             showBackError(err)
@@ -82,9 +82,8 @@ export const editMenu = async (fields: ImenuUpdate) => {
 
 export const deleteMenu = async (menu_id: number) => {
     return await axios
-        .delete(`${API_URL}/menu/`, {
+        .delete(`${API_URL}/menu/${menu_id}`, {
             headers: getHeaders().headers,
-            data: { id: menu_id }
         })
         .then((res) => res)
         .catch((err) => {

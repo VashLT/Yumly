@@ -9,13 +9,14 @@ type DishSmallProps = {
     image_url?: string;
 }
 
-const DEFAULT_URL = "https://i.imgur.com/mYO12aV.jpg";
+const DEFAULT_URL = "https://i.imgur.com/shbMhEJ.jpg";
 
 export const DishSmall: React.FC<DishSmallProps> = ({ id, name, image_url }) => {
     return (
         <Card sx={{
             display: 'flex',
             height: '100px',
+            marginBottom: '10px',
         }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>

@@ -17,42 +17,42 @@ export const AuthContext = React.createContext({
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const getAuth = useCallback(async () => {
-        let backendAuth: Iauth = await axios
-            .get(`${API_URL}/user/auth/`, getHeaders())
-            .then(res => {
-                console.log({ res })
-                return (res as unknown as IresAuth).data;
-            })
-            .catch(err => {
-                console.error('catched error [AuthProvider]', { err });
-                showBackError({
-                    message: err.message,
-                    status_code: 404,
-                    type: "error"
-                });
-                return mockAuth as Iauth;
-            })
-            .finally(() => setIsLoading(false));
+    // const getAuth = useCallback(async () => {
+    //     let backendAuth: Iauth = await axios
+    //         .get(`${API_URL}/user/auth/`, getHeaders())
+    //         .then(res => {
+    //             console.log({ res })
+    //             return (res as unknown as IresAuth).data;
+    //         })
+    //         .catch(err => {
+    //             console.error('catched error [AuthProvider]', { err });
+    //             showBackError({
+    //                 message: err.message,
+    //                 status_code: 404,
+    //                 type: "error"
+    //             });
+    //             return mockAuth as Iauth;
+    //         })
+    //         .finally(() => setIsLoading(false));
 
-        if (Object.values(backendAuth).filter(value => value !== "").length === 0) {
-            console.log("bad Auth", { backendAuth })
-            backendAuth = {} as Iauth
-        } else {
+    //     if (Object.values(backendAuth).filter(value => value !== "").length === 0) {
+    //         console.log("bad Auth", { backendAuth })
+    //         backendAuth = {} as Iauth
+    //     } else {
 
-            backendAuth.avatarUrl = avatarGen.generateRandomAvatar((backendAuth as Iauth).username);
-            console.log("getAuth", { backendAuth })
-        }
-        setAuth(backendAuth as Iauth);
-        // setAuth({} as Iauth); // disable auth
-        // setAuth(mockAuth) // enable global auth
-    }, [setAuth])
+    //         backendAuth.avatarUrl = avatarGen.generateRandomAvatar((backendAuth as Iauth).username);
+    //         console.log("getAuth", { backendAuth })
+    //     }
+    //     setAuth(backendAuth as Iauth);
+    //     // setAuth({} as Iauth); // disable auth
+    //     // setAuth(mockAuth) // enable global auth
+    // }, [setAuth])
 
-    useEffect(() => {
-        getAuth()
-    }, [getAuth]);
+    // useEffect(() => {
+    //     getAuth()
+    // }, [getAuth]);
 
     return (
         <AuthContext.Provider value={{

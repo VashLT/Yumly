@@ -3,6 +3,7 @@ import { Icategory } from "../Ingredients/interfaces";
 
 
 export interface IresMenu {
+     
     id: number;
     name: string;
     votes: number;
@@ -16,6 +17,8 @@ export interface IresMenu {
 
 export interface ImenuCreate {
     name: string;
+    author_id: number;
+    creation_date: string;
     description: string;
     dish_list: number[];
     categories: number[];

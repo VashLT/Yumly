@@ -27,16 +27,17 @@ export const DeleteDialog: React.FC<{ context: ImenuContext }> = ({ context }) =
     const deleteMenu = useCallback(async () => {
         setLoading(true);
         let res = await callDeleteEndpoint(menu.id);
+        setLoading(false);
         if (res === null) {
             showNotification("error", "This menu can not be deleted.");
             setIsDisabled(true);
         } else {
             context.setMenu({});
             showNotification("success", "Menu deleted succesfully");
+            setOpen(false);
             await fetchMenus();
         }
-        setOpen(false);
-        setLoading(false)
+
 
     }, [setLoading, menu, context])
 

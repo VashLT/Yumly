@@ -53,6 +53,7 @@ export const Dishes: React.FC = () => {
     const [didFetch, setDidFetch] = useState(false);
 
     useEffect(() => {
+        document.title = "Yumly | Dishes"
         if (didFetch) return;
         fetchDishes(() => setDidFetch(true))
     });
@@ -60,7 +61,7 @@ export const Dishes: React.FC = () => {
     return (
         <>
             <Typography className={classes.title} variant="h1" component="div" gutterBottom>
-                Platillos
+                Dishes
             </Typography>
             <Divider sx={{ mb: 2 }} />
             <Grid
@@ -89,6 +90,15 @@ export const getDishes = async () => {
         }) as IresDish[] | null;
 }
 
+export const searchDishes = async (name?: string, category?: string) => {
+    return await axios
+        .get(`${API_URL}/dishsearch?name=${name ?? ""}&category=${category ?? ""}`, getHeaders())
+        .then((res) => res.data ?? [])
+        .catch((err) => {
+            showBackError(err)
+            return null;
+        }) as IresDish[] | null; 
+}
 
 export const fetchDishes = async (callback?: () => void) => {
     let dishes: IresDish[] | null = await getDishes();

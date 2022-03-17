@@ -23,6 +23,7 @@ import Logo from '../Yumly/Logo';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../../utils/constants';
 import { AuthContext } from '../../Contexts/Auth';
+import { mockAuth } from '../../../utils/mock';
 
 const useStyles = makeStyles((theme: Theme) => ({
     hamburger: {
@@ -52,6 +53,7 @@ const pages = [
         redirectTo: '/dashboard/'
     }
 ];
+
 const settings = [
     {
         name: 'Profile',
@@ -70,7 +72,7 @@ const settings = [
 const Navbar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const { auth } = useContext(AuthContext);
+    const { auth, isAuth, setAuth } = useContext(AuthContext);
 
     settings[0].redirectTo = `/${auth.username}`;
 
@@ -93,6 +95,11 @@ const Navbar: React.FC = () => {
         redirect(event);
     };
 
+    const authenticate = () => {
+        setAuth(mockAuth);
+        (document.getElementById("auto-login") as HTMLAnchorElement).click();
+    }
+
     const redirect = (event: React.MouseEvent<HTMLElement>) => {
         (event.currentTarget.querySelector('a') as HTMLAnchorElement).click();
     }
@@ -107,7 +114,7 @@ const Navbar: React.FC = () => {
                             onClick={() => (document.getElementById("toDashboard") as HTMLElement).click()}
                         >
                             <Logo className={classes.logo} />
-                            <Link to='/dashboard' id="toDashboard"/>
+                            <Link to='/dashboard' id="toDashboard" />
                         </Box>
 
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -151,7 +158,7 @@ const Navbar: React.FC = () => {
                             <Logo className={classes.logo} />
                             <Link to='/dashboard' />
                         </Box>
-                        
+
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
                                 <Button
@@ -166,34 +173,39 @@ const Navbar: React.FC = () => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
+                            {isAuth ? <><Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                 </IconButton>
                             </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {settings.map((setting, index) => (
-                                    <MenuItem key={`set${index}`} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting.name}</Typography>
-                                        <Link to={setting.redirectTo} className={classes.itemBtn} />
-                                    </MenuItem>
-                                ))}
-                            </Menu>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    {settings.map((setting, index) => (
+                                        <MenuItem key={`set${index}`} onClick={handleCloseUserMenu}>
+                                            <Typography textAlign="center">{setting.name}</Typography>
+                                            <Link to={setting.redirectTo} className={classes.itemBtn} />
+                                        </MenuItem>
+                                    ))}
+                                </Menu></>
+                                : <div onClick={authenticate} style={{cursor: "pointer"}}>
+                                    <Typography textAlign="center" sx={{color: "white", fontWeight: 500}}>LOGIN</Typography>
+                                    <Link to="/dashboard" className={classes.itemBtn} id="auto-login" />
+                                </div>
+                            }
                         </Box>
                     </Toolbar>
                 </Container>

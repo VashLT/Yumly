@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Page from './Page';
 import { Route, Routes } from 'react-router-dom';
 import Dishes from '../Core/Dishes/Dishes';
@@ -12,6 +12,10 @@ import MenuCreation from '../Core/Menus/Creation/Creation';
 import DishCreation from '../Core/Dishes/Creation/Creation';
 
 export const Dashboard: React.FC = () => {
+    useEffect(() => {
+        document.title = "Yumly | Dashboard"
+    });
+
     return (
         <Page withNav={true}>
             <Box sx={{
@@ -19,7 +23,7 @@ export const Dashboard: React.FC = () => {
                 padding: '0 50px',
                 flexGrow: 1,
                 m: '0',
-                pt: '40px',
+                pt: '20px',
                 overflowX: 'hidden',
             }}>
                 <Routes>
@@ -32,7 +36,7 @@ export const Dashboard: React.FC = () => {
                 <ActionsButton />
             </Box>
         </Page>
-);
+    );
 }
 
 export const createMenu = () => {

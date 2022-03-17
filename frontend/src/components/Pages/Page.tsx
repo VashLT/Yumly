@@ -14,7 +14,7 @@ export const Page: React.FC<PageProps> = ({ children, id, className, withNav, ..
         }}>
             <CssBaseline />
             {withNav ? <Navbar /> : <></>}
-            <main>
+            <main style={{ overflowY: "auto" }}>
                 {children}
             </main>
         </Box>
