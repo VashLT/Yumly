@@ -1,5 +1,3 @@
-from typing_extensions import Required
-import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.fields import ArrayField
