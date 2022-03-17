@@ -1,3 +1,4 @@
+from typing_extensions import Required
 import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -54,7 +55,7 @@ class Dish(models.Model):
     name = models.CharField(max_length=256, blank=False, null=True)
     description = models.TextField()
     original_author_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, related_name='%(class)s_original',
+        User, on_delete=models.CASCADE, null=True, related_name='%(class)s_original'
     )
     author_id = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_author'

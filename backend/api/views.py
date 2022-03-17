@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import status
+from rest_framework.response import Response
 
-from rest_framework.exceptions import NotFound
 
 from api.serializers import DishSerializer, UserSerializer, GroupSerializer, IngredientSerializer, MenuSerializer, DishCategorySerializer
 
@@ -33,6 +33,14 @@ class DishViewSet(viewsets.ModelViewSet):
     queryset = Dish.objects.all()
     serializer_class = DishSerializer
     permission_classes = []
+
+    def put(self, request):
+        device = self.get_object()
+        serializer = DishSerializer(device, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
