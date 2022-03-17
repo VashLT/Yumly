@@ -1,6 +1,6 @@
 from re import S
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import viewsets, generics, filters
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -77,3 +77,27 @@ class IngredientViewSet(viewsets.ModelViewSet):
 class DishCategoryViewSet(viewsets.ModelViewSet):
     queryset = DishCategory.objects.all()
     serializer_class = DishCategorySerializer
+
+
+class DishSearchAPIView(generics.ListAPIView):
+    search_fields = ["name", "categories", "ingredient", "utensils"]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    serializer_class = DishSerializer
+
+    def get_queryset(self):
+        query_params = self.request.query_params
+
+        query_dict = {k: v for k, v in self.request.query_params.items() if v}
+        filter_keyword_arguments_dict = {}
+        for key, value in query_dict.items():
+            if key == "name":
+                filter_keyword_arguments_dict["name__icontains"] = value
+            if key == "categories":
+                filter_keyword_arguments_dict["categories__name__icontains"] = value
+            if key == "ingredient":
+                filter_keyword_arguments_dict["ingredient__name__icontains"] = value
+            if key == "utensils":
+                filter_keyword_arguments_dict["utensils__name__icontains"] = value
+
+        queryset = Dish.objects.filter(**filter_keyword_arguments_dict)
+        return queryset
