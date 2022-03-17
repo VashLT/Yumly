@@ -91,8 +91,10 @@ def create_dish(
     dish_categories = []
     # We get all the dish categories, create the ones missing
     for category in categories:
-        cat = models.DishCategory.objects.filter(name=category.lower())[0]
-        if not cat:
+        cat = models.DishCategory.objects.filter(name=category.lower())
+        if cat.exists():
+            cat = cat[0]
+        else:
             cat = create_category(
                 category_name=category.lower(), model=models.DishCategory
             )
@@ -101,25 +103,28 @@ def create_dish(
 
     utensil_list = []
     for utensil in utensils:
-        cat = models.Utensil.objects.filter(name=utensil.lower())[0]
-        if not cat:
-            cat = create_category(category_name=utensil.lower(), model=models.Utensil)
+        utl = models.Utensil.objects.filter(name=utensil.lower())
+        if utl.exists():
+            utl = utl[0]
+        else:
+            utl = create_category(category_name=utensil.lower(), model=models.Utensil)
 
-        utensil_list.append(cat)
+        utensil_list.append(utl)
 
     ingredient_list = []
     for ingredient in ingredients:
-        ingr = models.Ingredient.objects.filter(name=ingredient.lower())[0]
-        if not ingr:
-            return f"Missing ingredient {ingredient}"
-
-        ingredient_list.append(ingr)
+        ingr = models.Ingredient.objects.filter(name=ingredient.lower())
+        # return f"Missing ingredient {ingredient}"
+        try:
+            ingredient_list.append(ingr[0])
+        except:
+            raise Exception("Missing Ingredient")
 
     new_dish = models.Dish(
         name=dish_name,
         description=description,
-        original_author=original_author,
-        author=author,
+        original_author_id=original_author,
+        author_id=author,
         recipe_steps=recipe_steps,
         preparation_time=preparation_time,
         votes=0,
