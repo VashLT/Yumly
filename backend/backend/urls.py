@@ -3,6 +3,7 @@ from django.conf.urls import handler404
 
 from rest_framework import routers
 import api.views
+import oauth.views
 
 router = routers.DefaultRouter()
 router.register(r"users", api.views.UserViewSet)
@@ -17,6 +18,7 @@ router.register(r"dishcategory", api.views.DishCategoryViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", include(router.urls)),
+    path("oauth/", oauth.views.exchange_token, name='github'),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
     path("dishsearch/", api.views.DishSearchAPIView.as_view(), name="dishsearch"),
 ]

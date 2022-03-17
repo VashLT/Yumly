@@ -85,9 +85,9 @@ class DishSearchAPIView(generics.ListAPIView):
     serializer_class = DishSerializer
 
     def get_queryset(self):
-        query_params = self.request.query_params
+        query_params = self.request.query_params #type: ignore
 
-        query_dict = {k: v for k, v in self.request.query_params.items() if v}
+        query_dict = {k: v for k, v in self.request.query_params.items() if v} #type: ignore
         filter_keyword_arguments_dict = {}
         for key, value in query_dict.items():
             if key == "name":
