@@ -11,6 +11,15 @@ export interface IresMenu {
     dish_list: IresDish[];
     author_id: number | null;
     categories: Icategory[];
+}
+
+
+export interface ImenuCreate {
+    name: string;
+    description: string;
+    dish_list: number[];
+    categories: number[];
+    votes: number;
 }    
 export interface ImenuUpdate {
     id: number;

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ImenuUpdate, IresMenu } from '../interfaces';
+import { ImenuCreate, ImenuUpdate, IresMenu } from '../interfaces';
 import { API_URL, getHeaders } from '../../../../utils/constants';
 import axios from 'axios';
 import { showBackError } from '../../Alerts/BackendError';
@@ -58,6 +58,16 @@ const Menu: React.FC = () => {
             <div id={"_mE" + id}></div>
         </div>
     );
+}
+
+export const createMenu = async (fields: ImenuCreate) => {
+    return await axios
+        .post(`${API_URL}/menu/`, fields, getHeaders())
+        .then((res) => res)
+        .catch((err) => {
+            showBackError(err)
+            return null;
+        }) as IresMenu | null | boolean;
 }
 
 export const editMenu = async (fields: ImenuUpdate) => {
