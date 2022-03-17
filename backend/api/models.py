@@ -56,7 +56,7 @@ class Dish(models.Model):
     original_author_id = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_original',
     )
-    author = models.ForeignKey(
+    author_id = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_author'
     )
     recipe_steps = ArrayField(models.TextField(), size=100, blank=True, null=True)
