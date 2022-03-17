@@ -40,9 +40,9 @@ class DishCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MenuSerializer(serializers.ModelSerializer):
+class MenuCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Menu
+        model = models.MenuCategory
         fields = "__all__"
 
 
@@ -59,4 +59,13 @@ class DishSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Dish
+        fields = "__all__"
+
+
+class MenuSerializer(serializers.ModelSerializer):
+    categories = MenuCategorySerializer(read_only=True, many=True)
+    dish_ids = DishSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = models.Menu
         fields = "__all__"

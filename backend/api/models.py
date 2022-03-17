@@ -76,7 +76,7 @@ class Menu(models.Model):
     votes = models.IntegerField()
     description = models.TextField()
     creation_date = models.DateField()
-    dishes = models.ManyToManyField(Dish)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    dish_ids = models.ManyToManyField(Dish)
+    author_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     categories = models.ManyToManyField(MenuCategory)
     

@@ -148,3 +148,62 @@ def create_dish(
     new_dish.save()
 
     return new_dish
+
+
+def create_menu(
+    menu_name: str,
+    description: str,
+    dish_names: list[str],
+    categories: list[str],
+    author=None,
+):
+    pass
+
+    menu_categories = []
+    # We get all the dish categories, create the ones missing
+    for category in categories:
+        cat = models.MenuCategory.objects.filter(name=category.lower())
+        if cat.exists():
+            cat = cat[0]
+        else:
+            cat = create_category(
+                category_name=category.lower(), model=models.MenuCategory
+            )
+
+        menu_categories.append(cat)
+
+    dishes = []
+    for dish_name in dish_names:
+        dish = models.Dish.objects.filter(name=dish_name.lower())
+        if dish.exists():
+            dish = dish[0]
+
+        dishes.append(dish)
+
+    new_menu = models.Menu(
+        name=menu_name,
+        description=description,
+        votes=0,
+        creation_date=datetime.datetime.now(),
+        author_id=author,
+    )
+
+    new_menu.save()
+
+    for dish in dishes:
+        new_menu.dish_ids.add(dish)
+
+    for category in menu_categories:
+        new_menu.categories.add(category)
+
+    new_menu.save()
+
+    return new_menu
+
+
+create_menu(
+    menu_name="random stuff menu",
+    description="so random!",
+    dish_names=["curried lentils", "carol's arroz con pollo (edited)"],
+    categories=["grain", "rice", "quick", "chicken"],
+)
