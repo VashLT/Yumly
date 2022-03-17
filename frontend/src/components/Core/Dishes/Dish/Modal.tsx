@@ -8,6 +8,7 @@ import { makeStyles } from '@mui/styles';
 import { AuthContext } from '../../../Contexts/Auth';
 import { IresDish } from '../interfaces';
 import { YUMLY_AVATAR_URL } from '../../../../utils/constants';
+import { DEFAULT_LINK } from './Dish';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -56,18 +57,13 @@ export const DishModal: React.FC<DishModalProps> = ({ context, onClose, open }) 
                             src={dish.is_created ? auth.avatarUrl : YUMLY_AVATAR_URL}
                         />
                     }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVert />
-                        </IconButton>
-                    }
                     title={dish.name}
                     subheader={dish.creation_date}
                 />
                 <CardMedia
                     component="img"
                     height="194"
-                    image="/static/images/cards/paella.jpg"
+                    image={DEFAULT_LINK}
                     alt={dish.name}
                 />
                 <CardContent>
@@ -77,29 +73,35 @@ export const DishModal: React.FC<DishModalProps> = ({ context, onClose, open }) 
                     <IconButton aria-label="add to favorites">
                         <Favorite />
                     </IconButton>
-                    <IconButton
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                        sx={{ transform: !expanded ? 'rotate(0deg)' : 'rotate(180deg)', }}
-                        className={classes.expandMore}
-                    >
-                        <ExpandMore />
-                    </IconButton>
+                    {dish.recipe_steps ? (
+                        dish.recipe_steps.length > 0 ?
+                            <IconButton
+                                onClick={handleExpandClick}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                                sx={{ transform: !expanded ? 'rotate(0deg)' : 'rotate(180deg)', }}
+                                className={classes.expandMore}
+                            >
+                                <ExpandMore />
+                            </IconButton>
+                            : <></>
+                        )
+                    : null}
                 </CardActions>
+                {dish.recipe_steps ?
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
                             <Typography paragraph sx={{ fontWeight: 500 }}>Steps</Typography>
                             {dish.recipe_steps.map((step) => (
                                 <Typography paragraph sx={{ ml: 2 }}>
-                                    ■ {step}
+                                    &#8226; {step}
                                 </Typography>
                             ))}
                         </CardContent>
                     </Collapse>
-                    : null}
                 </Collapse>
+                : null}
             </Card>
         </BootstrapDialog>
     );

@@ -1,11 +1,14 @@
 import { Box, Card, CardMedia } from '@mui/material';
+import axios from 'axios';
 import React, { useContext } from 'react';
+import { API_URL, getHeaders } from '../../../../utils/constants';
 import DishContext, { DishProvider, IdishContext } from '../../../Contexts/Dish';
+import { showBackError } from '../../Alerts/BackendError';
 import { IresDish } from '../interfaces';
 import DishModal from './Modal';
 import DishPreview from './Preview';
 
-const DEFAULT_LINK = "https://i.imgur.com/shbMhEJ.jpg";
+export const DEFAULT_LINK = "https://i.imgur.com/shbMhEJ.jpg";
 
 type DishProps = {
     dish: IresDish;
@@ -22,7 +25,6 @@ export const DishWrapper: React.FC<DishProps> = ({ dish }) => {
 
 export const Dish: React.FC = () => {
     const [open, setOpen] = React.useState(false);
-    const [expanded, setExpanded] = React.useState(false);
 
     const context = useContext(DishContext);
 
@@ -36,8 +38,8 @@ export const Dish: React.FC = () => {
         setOpen(true);
     };
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    const handleClickClose = () => {
+        setOpen(false);
     };
 
     return (
@@ -57,10 +59,25 @@ export const Dish: React.FC = () => {
                 id={`_dM${dish.id}`}
                 context={context}
                 open={open}
+                onClose={handleClickClose}
             />
             <div id={"_dI" + dish.id}></div>
         </div>
     );
+}
+
+export const deleteDish = async (dish_id: number) => {
+    return await axios
+        .delete(`${API_URL}/dish/`, {
+            headers: getHeaders().headers,
+            data: { id: dish_id }
+        })
+        .then((res) => res)
+        .catch((err) => {
+            showBackError(err)
+            return null;
+        }) as IresDish | null | boolean;
+
 }
 
 export default DishWrapper;

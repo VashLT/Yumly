@@ -5,7 +5,7 @@ import axios from 'axios';
 import { cookieStorage } from '../../../utils/storage';
 import { IresDish } from './interfaces';
 import { DishWrapper as Dish } from './Dish/Dish';
-import Skeleton from './Skeleton';
+import Skeleton from './Skeleton/Skeleton';
 import { showBackError } from '../Alerts/BackendError';
 import { renderAt } from '../../../utils/components';
 import { mockDishes } from '../../../utils/mock';

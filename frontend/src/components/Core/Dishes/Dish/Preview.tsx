@@ -1,12 +1,13 @@
 import { IconButton, Card, CardHeader, Avatar, CardMedia, CardContent, Typography, CardActions, Collapse, Theme } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { MoreVert, Favorite, ExpandMore } from '@mui/icons-material';
-import React, { useContext } from 'react';
+import { MoreVert, Favorite, ExpandMore, OpenInFull } from '@mui/icons-material';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { YUMLY_AVATAR_URL } from '../../../../utils/constants';
 import { AuthContext } from '../../../Contexts/Auth';
+import DishDropdown from './Dropdown';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     expandMore: {
         marginLeft: 'auto',
     }
@@ -24,7 +25,7 @@ type DishPreviewProps = {
 }
 
 export const DishPreview: React.FC<DishPreviewProps> = ({
-    id,
+    onClick,
     is_created,
     name,
     description,
@@ -32,6 +33,7 @@ export const DishPreview: React.FC<DishPreviewProps> = ({
     image_url,
     recipe_steps,
 }) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [expanded, setExpanded] = React.useState(false);
 
     const { auth } = useContext(AuthContext);
@@ -42,8 +44,17 @@ export const DishPreview: React.FC<DishPreviewProps> = ({
         setExpanded(!expanded);
     };
 
+    const handleMoreClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const open = Boolean(anchorEl);
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card
+            sx={{ maxWidth: 345 }}
+            className="dish__small"
+        >
             <CardHeader
                 avatar={
                     <Avatar
@@ -52,9 +63,15 @@ export const DishPreview: React.FC<DishPreviewProps> = ({
                     />
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVert />
-                    </IconButton>
+                    <>
+                        <IconButton aria-label="settings" onClick={onClick} className="expand">
+                            <OpenInFull />
+                        </IconButton>
+                        <IconButton aria-label="settings" onClick={handleMoreClick}>
+                            <MoreVert />
+                        </IconButton>
+                        <DishDropdown anchorEl={anchorEl} open={open} handleClose={() => setAnchorEl(null)} />
+                    </>
                 }
                 title={name}
                 subheader={creation_date}

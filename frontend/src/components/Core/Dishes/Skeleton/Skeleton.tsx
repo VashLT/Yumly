@@ -6,18 +6,9 @@ export const Skeleton: React.FC = () => {
     const theme = useTheme();
     return (
         <Box>
-            <MUISkeleton variant="text" sx={{
-                width: '280px',
-                height: '40px',
-                transform: 'none',
-                [theme.breakpoints.up('sm')]: {
-                    width: '300px',
-                    height: '100px'
-                },
-            }} />
             <MUISkeleton variant="rectangular" sx={{
-                width: '280px',
-                height: '200px',
+                width: '235px',
+                height: '550px',
                 transform: 'none',
                 [theme.breakpoints.up('sm')]: {
                     width: '300px',

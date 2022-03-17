@@ -1,4 +1,4 @@
-import { AspectRatio, MoreVert, ThumbUp } from "@mui/icons-material";
+import { AspectRatio, MoreVert, OpenInFull, ThumbUp } from "@mui/icons-material";
 import { Card, CardHeader, IconButton, Divider, CardContent, Typography, CardActions, Button } from "@mui/material";
 import React, { useState } from "react";
 import { COLORS } from "../../../../utils/constants";
@@ -36,7 +36,7 @@ export const MenuPreview: React.FC<MenuPreviewProps> = ({ onClick, id, author_id
                 action={author_id !== null ?
                     <>
                         <IconButton aria-label="settings" onClick={onClick} className="expand">
-                            <AspectRatio style={{ color: 'white' }} />
+                            <OpenInFull style={{ color: 'white' }} />
                         </IconButton>
                         <IconButton aria-label="settings" onClick={handleMoreClick}>
                             <MoreVert style={{ color: 'white' }} />

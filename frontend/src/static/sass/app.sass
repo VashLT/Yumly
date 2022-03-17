@@ -49,14 +49,12 @@ body
         & .sidepanel
             background-color: #171c2f !important
 
-
-    & .menu
-        &__small 
-            & .expand
-                visibility: hidden !important
-            &:hover 
-                .expand
-                    visibility: visible !important
+    & .menu__small, & .dish__small
+        &:hover
+            .expand
+                visibility: visible !important
+        & .expand
+            visibility: hidden !important
 
 html
     overflow-x: hidden

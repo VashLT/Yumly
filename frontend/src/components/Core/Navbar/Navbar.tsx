@@ -45,11 +45,11 @@ const pages = [
     },
     {
         name: 'Ingredientes',
-        redirectTo: '/dashboard/ingredients',
+        redirectTo: '/dashboard/',
     },
     {
         name: 'Comunidad',
-        redirectTo: '/dashboard/community'
+        redirectTo: '/dashboard/'
     }
 ];
 const settings = [
@@ -88,8 +88,9 @@ const Navbar: React.FC = () => {
         redirect(event);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(null);
+        redirect(event);
     };
 
     const redirect = (event: React.MouseEvent<HTMLElement>) => {
