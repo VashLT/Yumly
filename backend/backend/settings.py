@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'corsheaders',
     "api",
     'oauth',
+    'social_django',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -160,4 +161,8 @@ SOCIAL_AUTH_PIPELINE = (
   'social_core.pipeline.user.user_details',
 )
 
-GITHUB_OAUTH_SECRET = '84a115b15543904bf3470c95707378538e6aa3e7'
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_URL_NAMESPACE = 'oauth'
+
+GITHUB_OAUTH_ID = 'ef0c24ed35ce2c76ff09'
+GITHUB_OAUTH_SECRET = '076707dd1fc11570fbe72dd5d4a9e26ac850ba11'

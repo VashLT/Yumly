@@ -64,7 +64,7 @@ class DishSerializer(serializers.ModelSerializer):
 
 class MenuSerializer(serializers.ModelSerializer):
     categories = MenuCategorySerializer(read_only=True, many=True)
-    dish_ids = DishSerializer(read_only=True, many=True)
+    dish_list = DishSerializer(read_only=True, many=True)
 
     class Meta:
         model = models.Menu

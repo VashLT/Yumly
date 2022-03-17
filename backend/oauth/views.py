@@ -45,8 +45,7 @@ def exchange_token(request, backend):
     Requests must include the following field
     - `access_token`: The OAuth2 access token provided by the provider
     """
-    print('BACKEND ES ESTE')
-    print(backend)
+
     serializer = SocialSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         # set up non-field errors key
@@ -94,3 +93,5 @@ def exchange_token(request, backend):
                 {'errors': {nfe: "Authentication Failed"}},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+# def
