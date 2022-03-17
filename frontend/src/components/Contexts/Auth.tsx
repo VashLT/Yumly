@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { mockAuth } from "../../utils/mock";
 // import { AvatarGenerator } from "random-avatar-generator";
-import { avatarGen } from "../../utils/constants";
+import { API_URL, avatarGen, getHeaders } from "../../utils/constants";
 import {Iauth, IresAuth} from "./interfaces";
 import axios from 'axios';
+import { cookieStorage } from "../../utils/storage";
+import { showBackError } from "../Core/Alerts/BackendError";
 
 export const AuthContext = React.createContext({
     auth: {} as Iauth,
@@ -18,17 +20,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const getAuth = useCallback(async () => {
-        let backendAuth: Iauth = await axios.get('api/user/auth/')
+        let backendAuth: Iauth = await axios
+            .get(`${API_URL}/user/auth/`, getHeaders())
             .then(res => {
                 console.log({ res })
-                const data = (res as unknown as IresAuth).data;
-                if ("error" in data) {
-                    return {} as Iauth;
-                }
-                return data.data;
+                return (res as unknown as IresAuth).data;
             })
             .catch(err => {
                 console.error('catched error [AuthProvider]', { err });
+                showBackError({
+                    message: err.message,
+                    status_code: 404,
+                    type: "error"
+                });
                 return mockAuth as Iauth;
             })
             .finally(() => setIsLoading(false));

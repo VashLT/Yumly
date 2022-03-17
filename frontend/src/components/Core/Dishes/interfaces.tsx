@@ -21,15 +21,17 @@ export interface IresDish {
     id: number;
     name: string;
     description: string;
-    original_author: IbasicUser | null;
-    author: IbasicUser | null;
-    ingredients: [Iingredient, number][];
     recipe_steps: string[];
+    original_author_id: number | null;
+    author_id: number | null;
+    ingredients: [Iingredient, number][];
     utensils: Icategory[];
     preparation_time: number;
+    creation_date: string;
     votes: number;
     times_added: number;
     is_published: boolean;
     is_created: boolean;
     categories: Icategory[];
 }
+

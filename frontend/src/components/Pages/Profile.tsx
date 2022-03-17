@@ -125,7 +125,7 @@ const Profile: React.FC<{ username: string }> = ({ username }) => {
                                     mt: '20px'
                                 }
                             }}>
-                            Created formulas
+                            Created menus
                         </Typography>
                         {/* <Box sx={{
                             display: 'flex',

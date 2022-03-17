@@ -8,7 +8,5 @@ export interface Iauth {
 }
 
 export interface IresAuth {
-    data: {
-        data: Iauth;
-    }
+    data: Iauth
 }

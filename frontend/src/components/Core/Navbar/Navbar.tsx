@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -22,6 +22,7 @@ import { makeStyles } from '@mui/styles';
 import Logo from '../Yumly/Logo';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../../utils/constants';
+import { AuthContext } from '../../Contexts/Auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
     hamburger: {
@@ -31,28 +32,47 @@ const useStyles = makeStyles((theme: Theme) => ({
     itemBtn: {
         textDecoration: 'none',
         color: 'white'
+    },
+    logo: {
+        height: '40px',
     }
 }));
 
 const pages = [
     {
         name: 'Platillos',
-        redirectTo: '/dish'
+        redirectTo: '/dashboard/dish'
     },
     {
         name: 'Ingredientes',
-        redirectTo: '/ingredients',
+        redirectTo: '/dashboard/',
     },
     {
         name: 'Comunidad',
-        redirectTo: '/community'
+        redirectTo: '/dashboard/'
     }
 ];
-const settings = ['Profile', 'Dashboard', 'Logout'];
+const settings = [
+    {
+        name: 'Profile',
+        redirectTo: `/`,
+    },
+    {
+        name: 'Dashboard',
+        redirectTo: '/dashboard',
+    },
+    {
+        name: 'Logout',
+        redirectTo: '/logout',
+    }
+];
 
 const Navbar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const { auth } = useContext(AuthContext);
+
+    settings[0].redirectTo = `/${auth.username}`;
 
     const classes = useStyles();
 
@@ -68,8 +88,9 @@ const Navbar: React.FC = () => {
         redirect(event);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(null);
+        redirect(event);
     };
 
     const redirect = (event: React.MouseEvent<HTMLElement>) => {
@@ -81,16 +102,13 @@ const Navbar: React.FC = () => {
             <AppBar position="fixed" sx={{ backgroundColor: COLORS.cyan }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        <Typography
-                            onClick={redirect}
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                        <Box
+                            sx={{ p: '5px', mr: '10px', display: { xs: 'none', md: 'flex' } }}
+                            onClick={() => (document.getElementById("toDashboard") as HTMLElement).click()}
                         >
-                            LOGO
-                            <Link to='/' />
-                        </Typography>
+                            <Logo className={classes.logo} />
+                            <Link to='/dashboard' id="toDashboard"/>
+                        </Box>
 
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
@@ -129,14 +147,11 @@ const Navbar: React.FC = () => {
                                 ))}
                             </Menu>
                         </Box>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                        >
-                            LOGO
-                        </Typography>
+                        <Box sx={{ flexGrow: 1, p: '5px', mr: '10px', display: { xs: 'flex', md: 'none' } }}>
+                            <Logo className={classes.logo} />
+                            <Link to='/dashboard' />
+                        </Box>
+                        
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
                                 <Button
@@ -172,9 +187,10 @@ const Navbar: React.FC = () => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
+                                {settings.map((setting, index) => (
+                                    <MenuItem key={`set${index}`} onClick={handleCloseUserMenu}>
+                                        <Typography textAlign="center">{setting.name}</Typography>
+                                        <Link to={setting.redirectTo} className={classes.itemBtn} />
                                     </MenuItem>
                                 ))}
                             </Menu>

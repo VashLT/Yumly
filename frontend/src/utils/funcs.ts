@@ -18,3 +18,5 @@ export const logout = async () => {
             console.error(err)
         })
 }
+
+export const redirect = (uri: string) => window.location.replace(uri);

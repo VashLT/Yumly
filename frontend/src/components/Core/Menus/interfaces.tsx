@@ -9,8 +9,16 @@ export interface IresMenu {
     description: string;
     creation_date: string;
     dish_list: IresDish[];
-    author: IbasicUser | null;
+    author_id: number | null;
     categories: Icategory[];
+}    
+export interface ImenuUpdate {
+    id: number;
+    name?: string;
+    votes?: number;
+    description?: string;
+    dish_list?: IresDish[];
+    categories?: Icategory[];
 }    
 export interface Imenu  {
     id: number;

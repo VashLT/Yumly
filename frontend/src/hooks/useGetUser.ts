@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { API_URL } from '../utils/constants';
 import { mockUser } from '../utils/mock';
 import { cookieStorage } from '../utils/storage';
 
@@ -12,7 +13,9 @@ export const useGetUser = (username: string): [boolean, Iuser] => {
         return [loading, user as Iuser]
     }
 
-    axios.post("/api/user/search/", {
+    console.log("useGetUser", { username })
+
+    axios.post(`${API_URL}/api/user/search/`, {
         username: username
     }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
         .then(res => {
