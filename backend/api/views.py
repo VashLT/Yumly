@@ -32,7 +32,7 @@ class MenuViewSet(viewsets.ModelViewSet):
 class DishViewSet(viewsets.ModelViewSet):
     queryset = Dish.objects.all()
     serializer_class = DishSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
