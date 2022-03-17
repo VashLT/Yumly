@@ -106,3 +106,11 @@ class DishSearchAPIView(generics.ListAPIView):
 
         queryset = Dish.objects.filter(**filter_keyword_arguments_dict)
         return queryset
+
+def check_user(request):
+
+    if request.user.is_authenticated:
+        return Response({'yei':'yei'}, status=status.HTTP_200_OK)
+    
+    else:
+        return Response({'nnei':'nnnnei'}, status=status.HTTP_404_NOT_FOUND)
