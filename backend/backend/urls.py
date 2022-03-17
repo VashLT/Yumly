@@ -21,5 +21,6 @@ urlpatterns = [
     path("oauth/", oauth.views.exchange_token, name='oauth'),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
     path("dishsearch/", api.views.DishSearchAPIView.as_view(), name="dishsearch"),
-    path('oauth/github/complete', api.views.check_user)
+    # path('complete/github/', api.views.check_user),
+    path('', include('social_django.urls', namespace='social'))
 ]

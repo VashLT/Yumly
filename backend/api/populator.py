@@ -191,7 +191,7 @@ def create_menu(
     new_menu.save()
 
     for dish in dishes:
-        new_menu.dish_ids.add(dish)
+        new_menu.dish_list.add(dish)
 
     for category in menu_categories:
         new_menu.categories.add(category)
@@ -202,7 +202,7 @@ def create_menu(
 
 
 create_menu(
-    menu_name="random stuff menu",
+    menu_name="random stuff menu AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     description="so random!",
     dish_names=["curried lentils", "carol's arroz con pollo (edited)"],
     categories=["grain", "rice", "quick", "chicken"],
