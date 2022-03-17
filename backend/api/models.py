@@ -53,14 +53,14 @@ class Dish(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256, blank=False, null=True)
     description = models.TextField()
-    original_author = models.ForeignKey(
+    original_author_id = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_original',
     )
-    author = models.ForeignKey(
+    author_id = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='%(class)s_author'
     )
-    recipe_steps = ArrayField(models.TextField(), size=100)
-    utensils = models.ManyToManyField(Utensil)
+    recipe_steps = ArrayField(models.TextField(), size=100, blank=True, null=True)
+    utensils = models.ManyToManyField(Utensil, blank=True)
     ingredients = models.ManyToManyField(Ingredient)
     preparation_time = models.IntegerField()
     votes = models.IntegerField()
@@ -68,7 +68,7 @@ class Dish(models.Model):
     is_published = models.BooleanField()
     is_created = models.BooleanField()
     creation_date = models.DateField()
-    categories = models.ManyToManyField(DishCategory)
+    categories = models.ManyToManyField(DishCategory, blank=True)
 
 
 class Menu(models.Model):

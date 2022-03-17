@@ -85,9 +85,6 @@ def create_dish(
 
     if models.Dish.objects.filter(
         name=dish_name,
-        original_author=original_author,
-        categories__in=models.DishCategory.objects.filter(name__in=categories),
-        utensils__in=models.Utensil.objects.filter(name__in=utensils),
     ):
         return f"Dish {dish_name} already exist"
 
@@ -143,20 +140,6 @@ def create_dish(
     for ingredient in ingredient_list:
         new_dish.ingredients.add(ingredient)
 
+    new_dish.save()
+
     return new_dish
-
-
-create_dish(
-    dish_name="Curried Lentils",
-    description="Simple recipe with exotic flavors, but only a few ingredients. Lentils are simmered in a coconut curry sauce. Serve over rice.",
-    preparation_time=40,
-    recipe_steps=[
-        "Rinse lentils and place in a saucepan with the water.",
-        "Bring to a boil, then cover, and simmer over low heat for 15 minutes.",
-        "Stir in the curry paste, coconut cream and season with salt to taste.",
-        "Return to a simmer, and cook for an additional 10 to 15 minutes, until tender.",
-    ],
-    ingredients=["lentils", "water", "cream of coconut", "curry paste", "salt"],
-    utensils=[],
-    categories=["lunch", "simple", "quick", "vegetarian"],
-)
