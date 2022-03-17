@@ -50,6 +50,7 @@ class DishViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         dish_obj = self.get_object()
         serializer = DishSerializer(dish_obj, data=request.data)
+        DishSerializer(self.get_object())
 
         if serializer.is_valid():
             pass
@@ -59,7 +60,10 @@ class DishViewSet(viewsets.ModelViewSet):
 
             dish_obj.save()
 
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            return Response(
+                DishSerializer(Dish.objects.get(id=dish_obj.id)).data,
+                status=status.HTTP_201_CREATED,
+            )
 
         except:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
