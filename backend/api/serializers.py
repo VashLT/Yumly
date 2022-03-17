@@ -34,11 +34,9 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class DishSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(read_only=True, many=True)
-
+class DishCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Dish
+        model = models.DishCategory
         fields = "__all__"
 
 
@@ -48,7 +46,17 @@ class MenuSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class DishCategorySerializer(serializers.MultipleChoiceField):
-    class Mete:
-        model = models.DishCategory
+class UtensilsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Utensil
+        fields = "__all__"
+
+
+class DishSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(read_only=True, many=True)
+    categories = DishCategorySerializer(read_only=True, many=True)
+    utensils = UtensilsSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = models.Dish
         fields = "__all__"
