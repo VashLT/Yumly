@@ -15,6 +15,7 @@ const App: React.FC = () => {
     <AuthProvider>
       <YumlyThemeProvider>
         <AppRouter />
+        <div id="_overlay"></div>
       </YumlyThemeProvider>
     </AuthProvider>
   );

@@ -21,12 +21,13 @@ export interface IresDish {
     id: number;
     name: string;
     description: string;
-    recipe_steps?: string[];
+    recipe_steps: string[];
     original_author_id: number | null;
     author_id: number | null;
     ingredients: [Iingredient, number][];
-    utensils?: Icategory[];
+    utensils: Icategory[];
     preparation_time: number;
+    creation_date: string;
     votes: number;
     times_added: number;
     is_published: boolean;

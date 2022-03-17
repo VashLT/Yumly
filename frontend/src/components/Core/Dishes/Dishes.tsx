@@ -4,12 +4,13 @@ import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { cookieStorage } from '../../../utils/storage';
 import { IresDish } from './interfaces';
-import Dish from './Dish';
+import { DishWrapper as Dish } from './Dish/Dish';
 import Skeleton from './Skeleton';
 import { showBackError } from '../Alerts/BackendError';
 import { renderAt } from '../../../utils/components';
 import { mockDishes } from '../../../utils/mock';
-import { API_URL } from '../../../utils/constants';
+import { API_URL, getHeaders } from '../../../utils/constants';
+import { IresMenu } from '../Menus/interfaces';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -78,28 +79,22 @@ export const Dishes: React.FC = () => {
     );
 }
 
+export const getDishes = async () => {
+    return await axios
+        .get(`${API_URL}/dish/`, getHeaders())
+        .then((res) => res.data)
+        .catch((err) => {
+            showBackError(err)
+            return null;
+        }) as IresDish[] | null;
+}
+
+
 export const fetchDishes = async (callback?: () => void) => {
-    let dishes: [] | IresDish[] = await axios.get(`${API_URL}/dish/`,
-        {
-            headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }
-        })
-        .then(res => {
-            console.log({ res });
-            if ("data" in res) {
-                return (res.data as unknown) as IresDish[];
-            }
-            return [];
-        })
-        .catch(err => {
-            console.log("showBackError", err);
-            showBackError(err);
-            return [];
-        });
-
+    let dishes: IresDish[] | null = await getDishes();
     console.log({ dishes })
-
     // temporary
-    if (dishes.length === 0) {
+    if (!Array.isArray(dishes) || dishes.length === 0) {
         dishes = mockDishes;
     }
 
@@ -118,12 +113,12 @@ export const insertDishes = (dishes: IresDish[]) => {
             {dishes.map((dish, index) => {
                 return (
                     <Grid item justifyContent={'center'}>
-                        <Dish key={"m" + index} />
+                        <Dish key={"m" + index} dish={dish} />
                     </Grid>
                 );
             })}
         </>,
-        "menus-grid"
+        "dishes-grid"
     )
 }
 

@@ -4,12 +4,13 @@ import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { cookieStorage } from '../../../utils/storage';
 import { Imenu, IresMenu } from './interfaces';
-import { MenuWrapper as Menu } from './Menu';
-import Skeleton from './Skeleton';
+import { MenuWrapper as Menu } from './Menu/Menu';
+import Skeleton from './Skeleton/Skeleton';
 import { showBackError } from '../Alerts/BackendError';
 import { renderAt } from '../../../utils/components';
 import { mockMenus } from '../../../utils/mock';
-import { API_URL } from '../../../utils/constants';
+import { API_URL, getHeaders } from '../../../utils/constants';
+import Header from '../Header/Header';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -58,10 +59,7 @@ export const Menus: React.FC = () => {
 
     return (
         <>
-            <Typography className={classes.title} variant="h1" component="div" gutterBottom>
-                Menús
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
+            <Header title="Menus"/>
             <Grid
                 id="menus-grid"
                 key="menus-grid"
@@ -78,28 +76,22 @@ export const Menus: React.FC = () => {
     );
 }
 
-export const fetchMenus = async (callback?: () => void) => {
-    let menus: [] | IresMenu[] = await axios.get(`${API_URL}/menus`,
-        {
-            headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }
-        })
-        .then(res => {
-            console.log({ res });
-            if ("data" in res) {
-                return (res.data as unknown) as IresMenu[];
-            }
-            return [];
-        })
-        .catch(err => {
-            console.log("showBackError", err);
-            showBackError(err);
-            return [];
-        });
+export const getMenus = async () => {
+    return await axios
+        .get(`${API_URL}/menu/`, getHeaders())
+        .then((res) => res.data)
+        .catch((err) => {
+            showBackError(err)
+            return null;
+        }) as IresMenu[] | null;
+}
 
+export const fetchMenus = async (callback?: () => void) => {
+    let menus: IresMenu[] | null = await getMenus();
     console.log({ menus })
 
     // temporary
-    if (menus.length === 0) {
+    if (!Array.isArray(menus) || menus.length === 0) {
         menus = mockMenus;
     }
 

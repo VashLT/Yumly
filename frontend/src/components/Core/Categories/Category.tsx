@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Dish: React.FC = () => {
+export const Category: React.FC = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ export const Dish: React.FC = () => {
 );
 }
 
-export default Dish;
+export default Category;

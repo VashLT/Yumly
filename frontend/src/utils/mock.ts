@@ -130,6 +130,8 @@ export const mockDishes: IresDish[] = [
         preparation_time: 20,
         votes: 5,
         times_added: 10,
+        creation_date: "2015-03-25",
+        utensils: [],
         is_published: false,
         is_created: false,
         categories: [mockDishCategories[3]]

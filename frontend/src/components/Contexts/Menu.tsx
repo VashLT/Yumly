@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { IresMenu } from '../Core/Menus/interfaces';
 
+export type ImenuContext = {
+    menu: IresMenu | {};
+    setMenu: (menu: IresMenu | {}) => void;
+}
+
 export const MenuContext = React.createContext({
     menu: {} as IresMenu | {},
     setMenu: (menu: IresMenu | {}) => { }

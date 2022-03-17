@@ -1,6 +1,7 @@
 import { Snackbar } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import React, { useState } from 'react';
+import { renderAt } from '../../../utils/components';
 
 type BriefNotificationProps = IntrinsicProps & {
     type: "main" | "secondary";
@@ -40,5 +41,19 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 ) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+export const showNotification = (
+    severity: "success" | "warning" | "error",
+    text: string
+) => {
+    renderAt(
+        <BriefNotification
+            type="secondary"
+            severity={severity}
+            text={text}
+        />,
+        "_overlay"
+    )   
+}
 
 export default BriefNotification;
