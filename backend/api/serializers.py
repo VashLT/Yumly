@@ -35,6 +35,8 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class DishSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(read_only=True, many=True)
+
     class Meta:
         model = models.Dish
         fields = "__all__"
