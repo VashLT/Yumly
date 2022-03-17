@@ -26,7 +26,7 @@ class NutricionalValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NutricionalValue
         fields = "__all__"
-    
+
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,9 +35,11 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class DishSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(read_only=True, many=True)
+
     class Meta:
         model = models.Dish
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -45,7 +47,8 @@ class MenuSerializer(serializers.ModelSerializer):
         model = models.Menu
         fields = "__all__"
 
+
 class DishCategorySerializer(serializers.MultipleChoiceField):
     class Mete:
         model = models.DishCategory
-        fields = '__all__'
+        fields = "__all__"

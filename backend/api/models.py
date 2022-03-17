@@ -10,25 +10,25 @@ class Filter(models.Model):
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256, blank=False, null=False)
-    icon = models.CharField(max_length=512)
+    icon = models.CharField(max_length=512, null=True)
 
     class Meta:
         abstract = True
 
 
-class IngredientCategory(models.Model):
+class IngredientCategory(Filter):
     pass
 
 
-class DishCategory(models.Model):
+class DishCategory(Filter):
     pass
 
 
-class MenuCategory(models.Model):
+class MenuCategory(Filter):
     pass
 
 
-class Utensil(models.Model):
+class Utensil(Filter):
     pass
 
 
@@ -61,6 +61,7 @@ class Dish(models.Model):
     )
     recipe_steps = ArrayField(models.TextField(), size=100, blank=True, null=True)
     utensils = models.ManyToManyField(Utensil, blank=True)
+    ingredients = models.ManyToManyField(Ingredient)
     preparation_time = models.IntegerField()
     votes = models.IntegerField()
     times_added = models.IntegerField()
