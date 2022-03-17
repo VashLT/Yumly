@@ -35,11 +35,13 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    
 
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+    permission_classes = []
 
 
 class DishViewSet(viewsets.ModelViewSet):
@@ -72,17 +74,20 @@ class DishViewSet(viewsets.ModelViewSet):
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    permission_classes = []
 
 
 class DishCategoryViewSet(viewsets.ModelViewSet):
     queryset = DishCategory.objects.all()
     serializer_class = DishCategorySerializer
+    permission_classes = []
 
 
 class DishSearchAPIView(generics.ListAPIView):
     search_fields = ["name", "categories", "ingredient", "utensils"]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     serializer_class = DishSerializer
+    permission_classes = []
 
     def get_queryset(self):
         query_params = self.request.query_params #type: ignore
